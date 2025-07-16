@@ -1,0 +1,30 @@
+{
+  "name": "cloudprep-ai",
+  "version": "1.0.0",
+  "description": "CloudPrep AI is a free, AI-powered web application designed to help learners effectively prepare for **AWS Cloud Certification exams**, starting with the **AWS Certified Cloud Practitioner**. It leverages Large Language Models (LLMs) to dynamically generate domain-specific, exam-style questions and provides two distinct modes of preparation tailored to user needs.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zargon01/CloudPrep-AI.git"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zargon01/CloudPrep-AI/issues"
+  },
+  "homepage": "https://github.com/zargon01/CloudPrep-AI#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
