@@ -1,7 +1,5 @@
-// /backend/middleware/auth.middleware.js
-
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -42,4 +40,4 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = protect;
+export default protect;

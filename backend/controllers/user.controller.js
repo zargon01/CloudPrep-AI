@@ -1,7 +1,11 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+// /backend/controllers/userController.js
 
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import User from '../models/user.model.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRY = '7d';
 
@@ -14,7 +18,7 @@ const generateToken = (userId) => {
 // AUTH CONTROLLERS
 // =============================
 
-exports.registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const existing = await User.findOne({ email });
@@ -38,7 +42,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-exports.loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -63,7 +67,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-exports.getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -77,7 +81,7 @@ exports.getCurrentUser = async (req, res) => {
 // ADMIN & USER PROFILE CONTROLLERS
 // =============================
 
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password');
     res.status(200).json(users);
@@ -86,7 +90,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -96,7 +100,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   const { name, email } = req.body;
   try {
     const user = await User.findById(req.params.id);
@@ -111,13 +115,16 @@ exports.updateUser = async (req, res) => {
     user.email = email || user.email;
     await user.save();
 
-    res.status(200).json({ message: 'User updated', user: { id: user._id, name: user.name, email: user.email } });
+    res.status(200).json({
+      message: 'User updated',
+      user: { id: user._id, name: user.name, email: user.email }
+    });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
 
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -134,7 +141,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-exports.updateUserRole = async (req, res) => {
+const updateUserRole = async (req, res) => {
   const { role } = req.body;
   try {
     const user = await User.findById(req.params.id);
@@ -149,7 +156,7 @@ exports.updateUserRole = async (req, res) => {
   }
 };
 
-exports.updatePassword = async (req, res) => {
+const updatePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   try {
     const user = await User.findById(req.params.id);
@@ -169,4 +176,20 @@ exports.updatePassword = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
+};
+
+// =============================
+// EXPORTS
+// =============================
+
+export {
+  registerUser,
+  loginUser,
+  getCurrentUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  updateUserRole,
+  updatePassword
 };
